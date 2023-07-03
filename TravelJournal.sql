@@ -1,28 +1,71 @@
-CREATE TABLE ACCOUNTS(
+CREATE TABLE ACCOUNT(
 	FirstName VARCHAR(20) NOT NULL,
     LastName VARCHAR(30) NOT NULL,
     Username VARCHAR(30) UNIQUE PRIMARY KEY NOT NULL,
     Email VARCHAR(40) UNIQUE NOT NULL,
     UserPassword VARCHAR(20) NOT NULL
 );
-SELECT ACCOUNTS;
 
-CREATE TABLE USERS(
+
+CREATE TABLE USER(
 	Username VARCHAR(30) NOT NULL PRIMARY KEY,
     MembershipDate DATE NOT NULL,
-    IsPublic BOOLEAN DEFAULT True,
-    BannedByAdmin VARCHAR(30),
-	FOREIGN KEY (Username) REFERENCES ACCOUNTS(Username),
-    FOREIGN KEY (BannedByAdmin) REFERENCES ADMINS(Username)
+    IsPublic BOOLEAN NOT NULL,
+    IsBanned BOOLEAN,
+	FOREIGN KEY (Username) REFERENCES ACCOUNTS(Username)
 );
-SELECT USERS;
 
-CREATE TABLE ADMINS(
+CREATE TABLE ADMIN(
 	Username VARCHAR(30) NOT NULL PRIMARY KEY,
     StartDate DATE NOT NULL,
-    FOREIGN KEY (Username) REFERENCES Account(Username)
+    FOREIGN KEY (Username) REFERENCES ACCOUNT(Username)
 );
-SELECT ADMINS;
+
+CREATE TABLE LOCATION(
+	LocationID INT PRIMARY KEY AUTO_INCREMENT
+);
+
+CREATE TABLE CITY(
+	CityName VARCHAR(20),
+    Country VARCHAR(20),
+    LocationID INT NOT NULL,
+    PRIMARY KEY (CityName, Country),
+    FOREIGN KEY (LocaitonID) REFERENCES LOCATION(LocationID)
+);
+
+CREATE TABLE SITE(
+	SiteName VARCHAR(30),
+    CityName VARCHAR(20),
+    Country VARCHAR(20),
+    LocationID INT NOT NULL,
+    PRIMARY KEY (SiteName,CityName, Country),
+    FOREIGN KEY (LocaitonID) REFERENCES LOCATION(LocationID)
+);
+
+CREATE TABLE TRIP(
+	TripName VARCHAR(30),
+    Username VARCHAR(30),
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    PRIMARY KEY (TripName, UserID),
+    FOREIGN KEY (Username) REFERENCES USER(Username),
+    CHECK (StartDate <= EndDate)
+);
+
+
+CREATE TABLE JOURNAL_ENTRY(
+	Username VARCHAR(30),
+    EntryDate DATE,
+    LocationID INT,
+    Note VARCHAR(250),
+    Rating INT 
+		CHECK (Rating >= 1 AND Rating <= 5),
+	PrivacyLevel BOOLEAN,
+    EntryID INT AUTO_INCREMENT PRIMARY KEY,
+    FOREIGN KEY (Username) REFERENCES USER(Username),
+    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+);
+
 
 CREATE TABLE ENTRY_IN_TRIP(
 	Username VARCHAR(30),
@@ -31,42 +74,3 @@ CREATE TABLE ENTRY_IN_TRIP(
     PRIMARY KEY (Username, EntryID, TripName),
     FOREIGN KEY (TripName) REFERENCES TRIP(TripName)
 );
-
-CREATE TABLE TRIP(
-	TripName VARCHAR(30),
-    UserID INT,
-    StartDate DATE,
-    EndDate DATE,
-    PRIMARY KEY (TripName, UserID),
-    FOREIGN KEY (UserID) REFERENCES USERS(Username)
-);
-
-CREATE TABLE JOURNAL_ENTRY(
-	UserID INT,
-    EntryDate DATE,
-    LocationID INT,
-    Note VARCHAR(250),
-    Rating INT 
-		CHECK (Rating >= 1 AND Rating <= 5)
-);
-
-
-CREATE TABLE City(
-	CityName VARCHAR(20) PRIMARY KEY,
-    Country VARCHAR(20),
-    LocationID INT,
-    PRIMARY KEY (CityName, Country),
-    FOREIGN KEY (LocaitonID) REFERENCES Location(LocationID)
-);
-
-CREATE TABLE SITE(
-	SiteName VARCHAR(30),
-    CityID INT,
-    LocationID INT,
-    PRIMARY KEY (SiteName,CityID)
-);
-
-CREATE TABLE LOCATION(
-	LocationID INT PRIMARY KEY
-);
-
