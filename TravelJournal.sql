@@ -47,24 +47,28 @@ CREATE TABLE TRIP(
     Username VARCHAR(30),
     StartDate DATE NOT NULL,
     EndDate DATE NOT NULL,
-    PRIMARY KEY (TripName, UserID),
+    PRIMARY KEY (TripName, Username),
     FOREIGN KEY (Username) REFERENCES USER(Username),
     CHECK (StartDate <= EndDate)
 );
 
 
 CREATE TABLE JOURNAL_ENTRY(
-	Username VARCHAR(30),
-    EntryDate DATE,
-    LocationID INT,
+	Username VARCHAR(30) NOT NULL,
+    EntryDate DATE NOT NULL,
+    LocationID INT NOT NULL,
     Note VARCHAR(250),
     Rating INT 
 		CHECK (Rating >= 1 AND Rating <= 5),
 	PrivacyLevel BOOLEAN,
     EntryID INT AUTO_INCREMENT PRIMARY KEY,
     FOREIGN KEY (Username) REFERENCES USER(Username),
-    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID),
+    CHECK (Rating IS NOT NULL OR Note IS NOT NULL),
+    UNIQUE (Username, EntryDate, LocationID)
 );
+
+-- add assertion to set default if privacy level is null 
 
 
 CREATE TABLE ENTRY_IN_TRIP(
@@ -72,5 +76,27 @@ CREATE TABLE ENTRY_IN_TRIP(
     EntryID INT,
     TripName VARCHAR(30),
     PRIMARY KEY (Username, EntryID, TripName),
-    FOREIGN KEY (TripName) REFERENCES TRIP(TripName)
+    FOREIGN KEY (TripName, Username) REFERENCES TRIP(TripName, Username),
+    FOREIGN KEY (EntryID) REFERENCES JOURNAL_ENTRY(EntryID)
+);
+
+CREATE TABLE REASON(
+    Reason VARCHAR(50),
+    PRIMARY KEY(Reason)
+);
+
+CREATE TABLE USER_FLAGS(
+    Reason VARCHAR(30),
+    EntryID INT,
+    FlagID INT,
+    PRIMARY KEY(FlagID),
+    FOREIGN KEY (EntryID) REFERENCES JOURNAL_ENTRY(EntryID)
+    );
+
+CREATE TABLE FLAG_REASON(
+    FlagID INT,
+    Reason VARCHAR(50),
+    PRIMARY KEY(FlagID, Reason),
+    FOREIGN KEY (Reason) REFERENCES REASON(Reason),
+    FOREIGN KEY (FlagID) REFERENCES USER_FLAGS(FlagID)
 );
