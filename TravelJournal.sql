@@ -78,17 +78,15 @@ DELIMITER $$
 USE `travel_journal`$$
 CREATE TRIGGER `travel_journal`.`JOURNAL_ENTRY_BEFORE_INSERT` BEFORE INSERT ON `JOURNAL_ENTRY` FOR EACH ROW
 BEGIN
-	IF NEW.PrivacyLevel = NULL AND (TRUE = (SELECT IsPublic
-										FROM USER
-                                        INNER JOIN JOURNAL_ENTRY
-                                        WHERE USER.Username = JOURNAL_ENTRY.Username))
+	DECLARE UserPublic BOOLEAN;
+    
+    SELECT IsPublic INTO UserPublic FROM USER WHERE USER.Username = NEW.username;
+    
+	IF NEW.PrivacyLevel IS NULL AND UserPublic = TRUE
 		THEN SET NEW.PrivacyLevel = TRUE;
 	END IF;
-	IF NEW.PrivacyLevel = NULL AND (FALSE = (SELECT IsPublic
-										FROM USER
-                                        INNER JOIN JOURNAL_ENTRY
-                                        WHERE USER.Username = JOURNAL_ENTRY.Username))
-	THEN SET NEW.PrivacyLevel = FALSE;
+	IF NEW.PrivacyLevel IS NULL AND UserPublic = FALSE
+		THEN SET NEW.PrivacyLevel = FALSE;
 	END IF;
 END$$
 DELIMITER ;
