@@ -91,6 +91,23 @@ BEGIN
 END$$
 DELIMITER ;
 
+DELIMITER $$
+USE `travel_journal`$$
+CREATE TRIGGER `travel_journal`.`JOURNAL_ENTRY_BEFORE_UPDATE` BEFORE UPDATE ON `JOURNAL_ENTRY` FOR EACH ROW
+BEGIN
+	DECLARE UserPublic BOOLEAN;
+    
+    SELECT IsPublic INTO UserPublic FROM USER WHERE USER.Username = NEW.username;
+    
+	IF NEW.PrivacyLevel IS NULL AND UserPublic = TRUE
+		THEN SET NEW.PrivacyLevel = TRUE;
+	END IF;
+	IF NEW.PrivacyLevel IS NULL AND UserPublic = FALSE
+		THEN SET NEW.PrivacyLevel = FALSE;
+	END IF;
+END$$
+DELIMITER ;
+
 CREATE TABLE ENTRY_IN_TRIP(
 	Username VARCHAR(30),
     EntryID INT,
