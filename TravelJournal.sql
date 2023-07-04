@@ -6,6 +6,7 @@ CREATE TABLE ACCOUNT(
     UserPassword VARCHAR(20) NOT NULL
 );
 
+-- should this be just user and admin where they have all of the shared information each
 
 CREATE TABLE USER(
 	Username VARCHAR(30) NOT NULL PRIMARY KEY,
@@ -27,12 +28,15 @@ CREATE TABLE LOCATION(
 	LocationID INT PRIMARY KEY AUTO_INCREMENT
 );
 
+--auto increment?
+
 CREATE TABLE CITY(
 	CityName VARCHAR(20),
     Country VARCHAR(20),
-    LocationID INT NOT NULL,
+    LocationID INT NOT NULL UNIQUE,
     PRIMARY KEY (CityName, Country),
     FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE SITE(
@@ -40,10 +44,11 @@ CREATE TABLE SITE(
 	SiteName VARCHAR(30) NOT NULL,
     CityName VARCHAR(20) NOT NULL,
     Country VARCHAR(20) NOT NULL,
-    LocationID INT NOT NULL,
+    LocationID INT NOT NULL UNIQUE,
     FOREIGN KEY (CityName, Country) REFERENCES CITY(CityName, Country),
     UNIQUE (SiteName, CityName, Country),
     FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+        ON DELETE RESTRICT
 );
 
 CREATE TABLE TRIP(
@@ -69,7 +74,8 @@ CREATE TABLE JOURNAL_ENTRY(
     EntryID INT AUTO_INCREMENT PRIMARY KEY,
     FOREIGN KEY (Username) REFERENCES USER(Username)
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID),
+    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+        ON DELETE RESTRICT,
     CHECK (Rating IS NOT NULL OR Note IS NOT NULL),
     UNIQUE (Username, EntryDate, LocationID)
 );
@@ -136,11 +142,14 @@ CREATE TABLE USER_FLAGS(
         ON DELETE CASCADE
 );
 
+-- flag can exist without reason
+
 CREATE TABLE FLAG_REASON(
     FlagID INT NOT NULL,
     Reason VARCHAR(50) NOT NULL,
     PRIMARY KEY(FlagID, Reason),
-    FOREIGN KEY (Reason) REFERENCES REASON(Reason),
+    FOREIGN KEY (Reason) REFERENCES REASON(Reason)
+        ON DELETE RESTRICT,
     FOREIGN KEY (FlagID) REFERENCES USER_FLAGS(FlagID)
         ON DELETE CASCADE
 );
@@ -155,6 +164,11 @@ CREATE TABLE SITE_CATEGORIES(
     Category VARCHAR(50),
     PRIMARY KEY(SiteID, Category),
     FOREIGN KEY (Category) REFERENCES CATEGORY(Category)
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (SiteID) REFERENCES SITE(SiteID)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
+
+--are sites deletable?
