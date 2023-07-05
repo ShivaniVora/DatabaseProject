@@ -1,19 +1,11 @@
 USE travel_journal;
 
-INSERT INTO ACCOUNT
+INSERT INTO ACCOUNTS
 VALUES
-    ("Cameron", "Loyet", "camloyet", "cameron@gmail.com", "password1234"),
-	("Bob", "Bober", "bobby", "cameron2@gmail.com", "password1234"),
-    ("Tom", "Itschner", "travel_lover123", "tom@gmail.com", "travelingisfun");
+    ("Cameron", "Loyet", "camloyet", "cameron@gmail.com", "password1234", True, "2020-08-08", False, False, False),
+	("Bob", "Bober", "bobby", "bobBryan@gmail.com", "password456", False, "2013-07-21", NULL, NULL, True),
+    ("Tom", "Itschner", "travel_lover123", "tom@gmail.com", "travelingisfun", True, "2019-07-10", TRUE, TRUE, False);
 
-INSERT INTO USER
-VALUES
-    ("camloyet", "2020-08-08", TRUE, FALSE),
-    ("travel_lover123", "2019-07-10", TRUE, NULL);
-
-INSERT INTO ADMIN
-VALUES 
-    ("bobby", "2013-07-21");
 
 INSERT INTO CITY
 VALUES 
