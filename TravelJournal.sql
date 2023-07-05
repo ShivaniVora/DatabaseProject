@@ -8,7 +8,7 @@ CREATE TABLE ACCOUNT(
 	MembershipStartDate DATE NOT NULL,
     IsPublic BOOLEAN,
     IsBanned BOOLEAN DEFAULT FALSE,
-    CHECK(IsUser = true AND IsPublic IS NOT NULL)
+    CHECK((IsUser = true AND IsPublic IS NOT NULL) OR IsUser = false)
 );
 
 CREATE TABLE LOCATION(
@@ -44,7 +44,7 @@ CREATE TABLE TRIP(
     StartDate DATE NOT NULL,
     EndDate DATE NOT NULL,
     PRIMARY KEY (TripName, Username),
-    FOREIGN KEY (Username) REFERENCES USER(Username)
+    FOREIGN KEY (Username) REFERENCES ACCOUNT(Username)
         ON DELETE CASCADE,
     CHECK (StartDate <= EndDate)
 );
@@ -59,7 +59,7 @@ CREATE TABLE JOURNAL_ENTRY(
 		CHECK (Rating >= 1 AND Rating <= 5),
 	PrivacyLevel BOOLEAN,
     EntryID INT AUTO_INCREMENT PRIMARY KEY,
-    FOREIGN KEY (Username) REFERENCES USER(Username)
+    FOREIGN KEY (Username) REFERENCES ACCOUNT(Username)
         ON DELETE CASCADE,
     FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
         ON DELETE RESTRICT,
@@ -73,7 +73,7 @@ CREATE TRIGGER `travel_journal`.`JOURNAL_ENTRY_BEFORE_INSERT` BEFORE INSERT ON `
 BEGIN
 	DECLARE UserPublic BOOLEAN;
     
-    SELECT IsPublic INTO UserPublic FROM USER WHERE USER.Username = NEW.username;
+    SELECT IsPublic INTO UserPublic FROM USER WHERE ACCOUNT.Username = NEW.username;
     
 	IF NEW.PrivacyLevel IS NULL AND UserPublic = TRUE
 		THEN SET NEW.PrivacyLevel = TRUE;
@@ -90,7 +90,7 @@ CREATE TRIGGER `travel_journal`.`JOURNAL_ENTRY_BEFORE_UPDATE` BEFORE UPDATE ON `
 BEGIN
 	DECLARE UserPublic BOOLEAN;
     
-    SELECT IsPublic INTO UserPublic FROM USER WHERE USER.Username = NEW.username;
+    SELECT IsPublic INTO UserPublic FROM ACCOUNT WHERE ACCOUNT.Username = NEW.username;
     
 	IF NEW.PrivacyLevel IS NULL AND UserPublic = TRUE
 		THEN SET NEW.PrivacyLevel = TRUE;
@@ -123,7 +123,7 @@ CREATE TABLE USER_FLAGS(
     EntryID INT NOT NULL,
     FlagID INT AUTO_INCREMENT NOT NULL,
     PRIMARY KEY(FlagID),
-	FOREIGN KEY (Username) REFERENCES USER(Username)
+	FOREIGN KEY (Username) REFERENCES ACCOUNT(Username)
         ON DELETE CASCADE,
     FOREIGN KEY (EntryID) REFERENCES JOURNAL_ENTRY(EntryID)
         ON DELETE CASCADE
