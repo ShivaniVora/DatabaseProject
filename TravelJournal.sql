@@ -73,7 +73,7 @@ CREATE TRIGGER `travel_journal`.`JOURNAL_ENTRY_BEFORE_INSERT` BEFORE INSERT ON `
 BEGIN
 	DECLARE UserPublic BOOLEAN;
     
-    SELECT IsPublic INTO UserPublic FROM USER WHERE ACCOUNT.Username = NEW.username;
+    SELECT IsPublic INTO UserPublic FROM ACCOUNT WHERE ACCOUNT.Username = NEW.username;
     
 	IF NEW.PrivacyLevel IS NULL AND UserPublic = TRUE
 		THEN SET NEW.PrivacyLevel = TRUE;

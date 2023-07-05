@@ -2,16 +2,16 @@ USE travel_journal;
 
 INSERT INTO ACCOUNT
 VALUES
-    ("Cameron", "Loyet", "camloyet", "cameron@gmail.com", "password1234", True, "2020-08-08", False, False),
+    ("Cameron", "Loyet", "camloyet", "cameron@gmail.com", "password1234", True, "2020-08-08", FALSE, FALSE),
 	("Bob", "Bober", "bobby", "bobBryan@gmail.com", "password456", False, "2013-07-21", NULL, NULL),
-    ("Tom", "Itschner", "travel_lover123", "tom@gmail.com", "travelingisfun", True, "2019-07-10", TRUE, TRUE);
+    ("Tom", "Itschner", "travel_lover123", "tom@gmail.com", "travelingisfun", True, "2019-07-10", TRUE, NULL);
 
 
 INSERT INTO CITY
 VALUES 
     ("London", "United Kingdom", 1),
     ("Dublin", "Ireland", 2),
-    ("Sydney", "Australia", 3)
+    ("Sydney", "Australia", 5)
 ;
 
 INSERT INTO SITE (SiteName, CityName, Country, LocationID)
