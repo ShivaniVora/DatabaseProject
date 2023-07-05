@@ -15,8 +15,6 @@ CREATE TABLE LOCATION(
 	LocationID INT PRIMARY KEY AUTO_INCREMENT
 );
 
--- auto increment?
-
 CREATE TABLE CITY(
 	CityName VARCHAR(20),
     Country VARCHAR(20),
@@ -129,8 +127,6 @@ CREATE TABLE USER_FLAGS(
         ON DELETE CASCADE
 );
 
--- flag can exist without reason
-
 CREATE TABLE FLAG_REASON(
     FlagID INT NOT NULL,
     Reason VARCHAR(50) NOT NULL,
@@ -157,8 +153,6 @@ CREATE TABLE SITE_CATEGORIES(
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-
--- are sites deletable?
 
 DELIMITER $$
 USE `travel_journal`$$
