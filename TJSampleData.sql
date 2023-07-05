@@ -15,9 +15,6 @@ INSERT INTO ADMIN
 VALUES 
     ("bobby", "2013-07-21");
 
-INSERT INTO LOCATION
-VALUES (),(),(),(),(),();
-
 INSERT INTO CITY
 VALUES 
     ("London", "United Kingdom", 1),

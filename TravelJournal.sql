@@ -6,8 +6,6 @@ CREATE TABLE ACCOUNT(
     UserPassword VARCHAR(20) NOT NULL
 );
 
--- should this be just user and admin where they have all of the shared information each
-
 CREATE TABLE USER(
 	Username VARCHAR(30) NOT NULL PRIMARY KEY,
     MembershipDate DATE NOT NULL,
@@ -28,7 +26,7 @@ CREATE TABLE LOCATION(
 	LocationID INT PRIMARY KEY AUTO_INCREMENT
 );
 
---auto increment?
+-- auto increment?
 
 CREATE TABLE CITY(
 	CityName VARCHAR(20),
@@ -171,4 +169,30 @@ CREATE TABLE SITE_CATEGORIES(
         ON UPDATE CASCADE
 );
 
---are sites deletable?
+-- are sites deletable?
+
+DELIMITER $$
+USE `travel_journal`$$
+CREATE TRIGGER `travel_journal`.`CITY_BEFORE_INSERT` BEFORE INSERT ON `CITY` FOR EACH ROW
+BEGIN
+	DECLARE NewLocID INT;
+    INSERT INTO LOCATION
+		VALUE ();
+    SELECT MAX(LOCATION.LocationID) INTO NewLocId
+		FROM LOCATION;
+	SET NEW.LocationID = NewLocID;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+USE `travel_journal`$$
+CREATE TRIGGER `travel_journal`.`SITE_BEFORE_INSERT` BEFORE INSERT ON `SITE` FOR EACH ROW
+BEGIN
+	DECLARE NewLocID INT;
+    INSERT INTO LOCATION
+		VALUE ();
+    SELECT MAX(LocationID) INTO NewLocId
+		FROM LOCATION;
+	SET NEW.LocationID = NewLocID;
+END$$
+DELIMITER ;
