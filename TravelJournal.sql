@@ -11,30 +11,30 @@ CREATE TABLE ACCOUNT(
     CHECK((IsUser = true AND IsPublic IS NOT NULL) OR IsUser = false)
 );
 
-CREATE TABLE LOCATION(
-	LocationID INT PRIMARY KEY AUTO_INCREMENT
-);
+-- CREATE TABLE LOCATION(
+-- 	LocationID INT PRIMARY KEY AUTO_INCREMENT
+-- );
 
 CREATE TABLE CITY(
 	CityName VARCHAR(20),
     Country VARCHAR(20),
     LocationID INT NOT NULL UNIQUE,
-    PRIMARY KEY (CityName, Country),
-    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
-        ON DELETE RESTRICT
+    PRIMARY KEY (CityName, Country)
+--     FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+--         ON DELETE RESTRICT
 );
 
-CREATE TABLE SITE(
-	SiteID INT PRIMARY KEY AUTO_INCREMENT,
-	SiteName VARCHAR(30) NOT NULL,
-    CityName VARCHAR(20) NOT NULL,
-    Country VARCHAR(20) NOT NULL,
-    LocationID INT NOT NULL UNIQUE,
-    FOREIGN KEY (CityName, Country) REFERENCES CITY(CityName, Country),
-    UNIQUE (SiteName, CityName, Country),
-    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
-        ON DELETE RESTRICT
-);
+-- CREATE TABLE SITE(
+-- 	SiteID INT PRIMARY KEY AUTO_INCREMENT,
+-- 	SiteName VARCHAR(30) NOT NULL,
+--     CityName VARCHAR(20) NOT NULL,
+--     Country VARCHAR(20) NOT NULL,
+--     LocationID INT NOT NULL UNIQUE,
+--     FOREIGN KEY (CityName, Country) REFERENCES CITY(CityName, Country),
+--     UNIQUE (SiteName, CityName, Country),
+--     FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+--         ON DELETE RESTRICT
+-- );
 
 CREATE TABLE TRIP(
 	TripName VARCHAR(30),
@@ -51,18 +51,19 @@ CREATE TABLE TRIP(
 CREATE TABLE JOURNAL_ENTRY(
 	Username VARCHAR(30) NOT NULL,
     EntryDate DATE NOT NULL,
-    LocationID INT NOT NULL,
     Note VARCHAR(250),
     Rating INT 
 		CHECK (Rating >= 1 AND Rating <= 5),
 	PrivacyLevel BOOLEAN,
+    CityName VARCHAR(20),
+    Country VARCHAR(20),
     EntryID INT AUTO_INCREMENT PRIMARY KEY,
     FOREIGN KEY (Username) REFERENCES ACCOUNT(Username)
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationID) REFERENCES LOCATION(LocationID)
+    FOREIGN KEY (CityName, Country) REFERENCES City(CityName, Country)
         ON DELETE RESTRICT,
     CHECK (Rating IS NOT NULL OR Note IS NOT NULL),
-    UNIQUE (Username, EntryDate, LocationID)
+    UNIQUE (Username, EntryDate, CityName, Country)
 );
 
 DELIMITER $$
@@ -142,40 +143,40 @@ CREATE TABLE CATEGORY(
     PRIMARY KEY(Category)
 );
 
-CREATE TABLE SITE_CATEGORIES(
-    SiteID INT,
-    Category VARCHAR(50),
-    PRIMARY KEY(SiteID, Category),
-    FOREIGN KEY (Category) REFERENCES CATEGORY(Category)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-    FOREIGN KEY (SiteID) REFERENCES SITE(SiteID)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
+-- CREATE TABLE SITE_CATEGORIES(
+--     SiteID INT,
+--     Category VARCHAR(50),
+--     PRIMARY KEY(SiteID, Category),
+--     FOREIGN KEY (Category) REFERENCES CATEGORY(Category)
+--         ON DELETE CASCADE
+--         ON UPDATE CASCADE,
+--     FOREIGN KEY (SiteID) REFERENCES SITE(SiteID)
+--         ON DELETE CASCADE
+--         ON UPDATE CASCADE
+-- );
 
-DELIMITER $$
-USE `travel_journal`$$
-CREATE TRIGGER `travel_journal`.`CITY_BEFORE_INSERT` BEFORE INSERT ON `CITY` FOR EACH ROW
-BEGIN
-	DECLARE NewLocID INT;
-    INSERT INTO LOCATION
-		VALUE ();
-    SELECT MAX(LOCATION.LocationID) INTO NewLocId
-		FROM LOCATION;
-	SET NEW.LocationID = NewLocID;
-END$$
-DELIMITER ;
+-- DELIMITER $$
+-- USE `travel_journal`$$
+-- CREATE TRIGGER `travel_journal`.`CITY_BEFORE_INSERT` BEFORE INSERT ON `CITY` FOR EACH ROW
+-- BEGIN
+-- 	DECLARE NewLocID INT;
+--     INSERT INTO LOCATION
+-- 		VALUE ();
+--     SELECT MAX(LOCATION.LocationID) INTO NewLocId
+-- 		FROM LOCATION;
+-- 	SET NEW.LocationID = NewLocID;
+-- END$$
+-- DELIMITER ;
 
-DELIMITER $$
-USE `travel_journal`$$
-CREATE TRIGGER `travel_journal`.`SITE_BEFORE_INSERT` BEFORE INSERT ON `SITE` FOR EACH ROW
-BEGIN
-	DECLARE NewLocID INT;
-    INSERT INTO LOCATION
-		VALUE ();
-    SELECT MAX(LocationID) INTO NewLocId
-		FROM LOCATION;
-	SET NEW.LocationID = NewLocID;
-END$$
-DELIMITER ;
+-- DELIMITER $$
+-- USE `travel_journal`$$
+-- CREATE TRIGGER `travel_journal`.`SITE_BEFORE_INSERT` BEFORE INSERT ON `SITE` FOR EACH ROW
+-- BEGIN
+-- 	DECLARE NewLocID INT;
+--     INSERT INTO LOCATION
+-- 		VALUE ();
+--     SELECT MAX(LocationID) INTO NewLocId
+-- 		FROM LOCATION;
+-- 	SET NEW.LocationID = NewLocID;
+-- END$$
+-- DELIMITER ;
