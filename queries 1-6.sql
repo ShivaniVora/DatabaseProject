@@ -17,7 +17,7 @@ SELECT IsUser FROM account WHERE username = @user_field AND UserPassword = @pass
 INSERT INTO account VALUES
 	(@firstname, @lastname, @user_field,@email,@pass,@isUser,@membershipStartDate,@isPublic,@isBanned);
 
--- Q3 TODO
+-- Q3 NOT A QUERY
 
 
 -- Q4 - return empty table if not admin/no user exists, a row with values otherwise
