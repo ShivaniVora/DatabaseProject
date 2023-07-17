@@ -38,26 +38,26 @@ VALUES ('Summer in Barcelona', 'user', '2023-05-12', '2023-07-29');
 /* Query 8 - Table is automatically populated with all cities and their avg rating based on
 all users ratings (as long as the rating is public). */
 
-SELECT CITY.CityName, CITY.Country, AVG(JOURNAL_ENTRY.Rating)
-FROM CITY NATURAL JOIN JOURNAL_ENTRY 
-WHERE JOURNAL_ENTRY.PrivacyLevel = TRUE
-GROUP BY CITY.CityName, CITY.Country;
+SELECT CityName, Country, AVG(Rating)
+FROM JOURNAL_ENTRY 
+WHERE PrivacyLevel = TRUE
+GROUP BY CityName, Country;
 
 /* Query 9 - “Search for City” textbox filters down to just “London” for example if you
 that is typed in and “Search” button is clicked (updating this window). */
 
-SELECT CITY.CityName, CITY.Country, AVG(JOURNAL_ENTRY.Rating)
-FROM CITY NATURAL JOIN JOURNAL_ENTRY 
-WHERE JOURNAL_ENTRY.PrivacyLevel = TRUE AND CityName = "London"
-GROUP BY CITY.CityName, CITY.Country;
+SELECT CityName, Country, AVG(Rating)
+FROM JOURNAL_ENTRY 
+WHERE PrivacyLevel = TRUE AND CityName = "London"
+GROUP BY CityName, Country;
 
 /* Query 10 - “Reset” goes back to all cities being loaded. (Clears the search textbox
 too.) SQL #8 and SQL #10 might be the same - you decide. */
 
-SELECT CITY.CityName, CITY.Country, AVG(JOURNAL_ENTRY.Rating)
-FROM CITY NATURAL JOIN JOURNAL_ENTRY 
+SELECT CityName, Country, AVG(Rating)
+FROM JOURNAL_ENTRY 
 WHERE JOURNAL_ENTRY.PrivacyLevel = TRUE
-GROUP BY CITY.CityName, CITY.Country;
+GROUP BY CityName, Country;
 
 -- SQL #11: this window is populated with all the (public) entries from all users about one given city.
 -- Dummy data: City Name and Country Name from the previous screen 
@@ -94,7 +94,7 @@ WHERE Username = "user";
 -- user, isPublic come from the stored values, rest come from input
 
 INSERT INTO JOURNAL_ENTRY(Username,EntryDate, Note, Rating, PrivacyLevel, CityName, Country) 
-VALUES ("user", CURDATE(), "Great visit!", 5, True, "Dublin", "Ireland");
+VALUES ("user", CURDATE(), "Great visit!", 5, True, "NewCity", "NewCountry");
 
 -- SQL #16: query populates this screen with the user’s trip names. Clicking a trip name takes the user to the “My Trip Report” screen.
 -- "user" is the username of the currently logged in user, has to be passed from previous screens
