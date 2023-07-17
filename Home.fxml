@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="279.0" layoutY="82.0" text="Home" />
+      <Button layoutX="32.0" layoutY="21.0" mnemonicParsing="false" text="Log out" />
+      <Button layoutX="518.0" layoutY="21.0" mnemonicParsing="false" text="Settings" />
+      <Button layoutX="89.0" layoutY="188.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="74.0" text="Create Trip" />
+      <Button layoutX="180.0" layoutY="189.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="126.0" text="View Trips/Entries" textOverrun="CLIP" />
+      <Button layoutX="322.0" layoutY="189.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="99.0" text="Search Citites" textOverrun="CLIP" />
+      <Button layoutX="432.0" layoutY="188.0" mnemonicParsing="false" prefHeight="87.0" prefWidth="126.0" text="Create Entries" textOverrun="CLIP" />
+   </children>
+</Pane>
