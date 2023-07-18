@@ -10,11 +10,11 @@ public class DataBaseConnector {
         String databaseName = "travel_journal";
         String databaseUser = "root";
         //TODO put in password
-        String databasePassword = "duckster2004!";
+        String databasePassword = "shivu797";
         String url = "jdbc:mysql://localhost:3306/" + databaseName;
 
         try{
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("test");
             databaseLink = DriverManager.getConnection(url, databaseUser, databasePassword);
         } catch (Exception e) {
