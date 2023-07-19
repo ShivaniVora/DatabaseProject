@@ -10,7 +10,7 @@ public class DataBaseConnector {
         String databaseName = "travel_journal";
         String databaseUser = "root";
         //TODO put in password
-        String databasePassword = "pass";
+        String databasePassword = "shivu797";
         String url = "jdbc:mysql://localhost:3306/" + databaseName;
 
         try{
