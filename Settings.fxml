@@ -5,18 +5,21 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
-
+<?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField layoutX="214.0" layoutY="255.0" promptText="Password" />
-      <Label layoutX="267.0" layoutY="84.0" text="Settings" />
+      <Label layoutX="225.0" layoutY="64.0" prefHeight="73.0" prefWidth="132.0" text="Settings">
+         <font>
+            <Font size="37.0" />
+         </font></Label>
       <Button layoutX="33.0" layoutY="31.0" mnemonicParsing="false" text="Log Out" />
       <TextField layoutX="214.0" layoutY="141.0" promptText="First Name" />
       <TextField layoutX="214.0" layoutY="175.0" promptText="Last Name" />
       <TextField layoutX="214.0" layoutY="214.0" promptText="Email" />
-      <CheckBox layoutX="252.0" layoutY="296.0" mnemonicParsing="false" text="Publc" />
+      <CheckBox layoutX="261.0" layoutY="294.0" mnemonicParsing="false" text="Public" />
       <Button layoutX="263.0" layoutY="328.0" mnemonicParsing="false" text="Submit" />
-      <Button layoutX="261.0" layoutY="361.0" mnemonicParsing="false" text="Delete" textFill="RED" />
+      <Button layoutX="264.0" layoutY="360.0" mnemonicParsing="false" text="Delete" textFill="RED" />
    </children>
 </Pane>
