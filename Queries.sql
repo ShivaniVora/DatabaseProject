@@ -77,10 +77,10 @@ WHERE EntryID = 2;
 -- user and the entry id are passed from the previous screen, flags from current screen input
 
 INSERT INTO USER_FLAGS
-VALUES ("user", 2);
+VALUES ("user", 1);
 
 INSERT INTO FLAG_REASON
-	VALUES ("user", 2, "Harrassment"), ("user", 2, "Explicit Language");
+	VALUES ("user", 1, "Harrassment"), ("user", 1, "Explicit Language");
 
 /*
 -- SQL #14: Public vs Private. The user can choose to click to change that if they want to
@@ -124,7 +124,7 @@ ORDER BY EntryDate;
 
 SELECT EntryDate, CityName, Country, Rating, Note
 FROM JOURNAL_ENTRY NATURAL JOIN CITY
-WHERE Username = "user"
+WHERE Username = "camloyet"
 ORDER BY EntryDate;
 
 -- SQL #19: Clicking on “City” reorders the info alphabetically by city name (A-Z)
@@ -201,7 +201,7 @@ WHERE
 -- will remove all flags related to the entry, entryID passed from previous screen
 
 DELETE FROM USER_FLAGS
-WHERE EntryID = 5;
+WHERE EntryID = 1;
 
 -- #26: "Delete entry" button which deletes this one entry
 -- entryId passed from previous screen
