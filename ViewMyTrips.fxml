@@ -17,14 +17,10 @@
             <Font size="36.0" />
          </font>
       </Text>
-      <Pane layoutX="180.0" layoutY="113.0" prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <TableView prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn prefWidth="199.0" text="Trips" />
-              </columns>
-            </TableView>
-         </children>
-      </Pane>
+      <TableView layoutX="180.0" layoutY="115.0" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn prefWidth="199.0" text="Trips" />
+        </columns>
+      </TableView>
    </children>
 </Pane>
