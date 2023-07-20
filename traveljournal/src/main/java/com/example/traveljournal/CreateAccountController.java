@@ -8,12 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CreateAccountController extends Application {
 
@@ -33,6 +31,9 @@ public class CreateAccountController extends Application {
     public CheckBox isAdmin;
     @FXML
     public CheckBox isPublic;
+
+    @FXML
+    public Label incorrect;
 
     public static void main(String[] args) {
         launch(args);
@@ -59,31 +60,40 @@ public class CreateAccountController extends Application {
         String connectQuery = "INSERT INTO ACCOUNT (FirstName, LastName, Username, Email, UserPassword, IsUser, MembershipStartDate, isPublic)" +
                 "VALUES ('" + fn.getText() + "', '" + ln.getText() + "', '" + createUser.getText() + "', '" + email.getText() + "', '" + password.getText() + "', " + adminTrue + ", CURDATE(), "+ publicity +" );";
 
-
         try {
             int result = 0;
+            boolean changed = false;
             FXMLLoader fxmlLoader = null;
             if (!(fn.getText().equals("") || ln.getText().equals("") || createUser.getText().equals("") || email.getText().equals("") || password.getText().equals(""))){
                 Statement statement = connectDB.createStatement();
                 result = statement.executeUpdate((connectQuery));
+                if (result != 0 && adminTrue.equals("1")) {
+                    changed = true;
+                    fxmlLoader = new FXMLLoader((TJApp.class.getResource("Home.fxml")));
+                    Scene scene = new Scene(fxmlLoader.load());
+                    //Stage stage = getCurrentStage(event);
+                    Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+                    stage.setScene(scene);
+                    HomeController controller = fxmlLoader.getController();
+                    controller.setInfo(createUser.getText());
+                } else if (result != 0 && adminTrue.equals("0")) {
+                    changed = true;
+                    fxmlLoader = new FXMLLoader((TJApp.class.getResource("Admin_Flags_Home_Page.fxml")));
+                    Scene scene = new Scene(fxmlLoader.load());
+                    //Stage stage = getCurrentStage(event);
+                    Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+                    stage.setScene(scene);
+                }
+                if (!changed){
+                    incorrect.setText("Please choose a different username or email");
+                }
+            } else {
+                incorrect.setText("No fields can be empty");
             }
-            if (result != 0 && adminTrue.equals("1")) {
-                fxmlLoader = new FXMLLoader((TJApp.class.getResource("Home.fxml")));
-                Scene scene = new Scene(fxmlLoader.load());
-                //Stage stage = getCurrentStage(event);
-                Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
-                stage.setScene(scene);
-                HomeController controller = fxmlLoader.getController();
-                controller.setInfo(createUser.getText());
-            } else if (result != 0 && adminTrue.equals("0")) {
-                fxmlLoader = new FXMLLoader((TJApp.class.getResource("Admin_Flags_Home_Page.fxml")));
-                Scene scene = new Scene(fxmlLoader.load());
-                //Stage stage = getCurrentStage(event);
-                Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
-                stage.setScene(scene);
-            }
+        } catch (SQLIntegrityConstraintViolationException e) {
+            incorrect.setText("Please choose a different username or email");
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         connectDB.close();
     }
