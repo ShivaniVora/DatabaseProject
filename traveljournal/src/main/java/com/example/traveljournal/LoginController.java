@@ -62,7 +62,7 @@ public class LoginController {
 
     public void createAccButton (ActionEvent event) throws SQLException {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("Create Account.fxml")));
+            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("CreateAccount.fxml")));
             Scene scene = new Scene(fxmlLoader.load());
             //Stage stage = getCurrentStage(event);
             Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
