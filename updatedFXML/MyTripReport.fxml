@@ -15,13 +15,13 @@
             <Font size="36.0" />
          </font>
       </Text>
-      <TableView layoutX="139.0" layoutY="140.0" prefHeight="200.0" prefWidth="323.0">
+      <TableView fx:id="tableView" layoutX="139.0" layoutY="140.0" prefHeight="200.0" prefWidth="323.0" onMouseClicked="#cityEntry">
         <columns>
-          <TableColumn prefWidth="67.0" text="Date" />
-          <TableColumn prefWidth="62.0" text="City" />
-            <TableColumn prefWidth="76.0" text="Country" />
-            <TableColumn prefWidth="53.0" text="Rating" />
-            <TableColumn prefWidth="64.0" text="Note" />
+<!--          <TableColumn fx:id="dateCol" prefWidth="67.0" text="Date" />-->
+<!--          <TableColumn fx:id="cityCol" prefWidth="62.0" text="City" />-->
+<!--            <TableColumn fx:id="countryCol" prefWidth="76.0" text="Country" />-->
+<!--            <TableColumn fx:id="ratingCol" prefWidth="53.0" text="Rating" />-->
+<!--            <TableColumn fx:id="noteCol" prefWidth="64.0" text="Note" />-->
         </columns>
       </TableView>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Back" onAction="#back" />

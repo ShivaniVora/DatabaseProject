@@ -98,13 +98,18 @@ public class ViewTripsController extends Application {
     }
     public void handleRowClick(Event event) throws SQLException {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("MyTripReport.fxml")));
-            Scene scene = new Scene(fxmlLoader.load());
-            //Stage stage = getCurrentStage(event);
-            Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
-            stage.setScene(scene);
-            MyTripReportController controller = fxmlLoader.getController();
-            controller.setInfo(user);
+            String userlist = tableView.getSelectionModel().getSelectedItem().toString();
+            if (userlist != null) {
+                System.out.println(userlist.substring(1, userlist.length() - 1));
+                FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("MyTripReport.fxml")));
+                Scene scene = new Scene(fxmlLoader.load());
+                //Stage stage = getCurrentStage(event);
+                Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+                stage.setScene(scene);
+                MyTripReportController controller = fxmlLoader.getController();
+                controller.setTrip(userlist.substring(1, userlist.length() - 1));
+                controller.setInfo(user);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
