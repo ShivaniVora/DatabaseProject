@@ -17,7 +17,9 @@ import java.sql.Statement;
 
 public class ViewCityEntryController extends Application {
 
+    public String entryUser;
     public String user;
+
     public String city;
     public String date;
 
@@ -55,29 +57,23 @@ public class ViewCityEntryController extends Application {
     }
 
     public void report(ActionEvent event) throws SQLException {
-        DataBaseConnector connection = new DataBaseConnector();
-        Connection connectDB = connection.getConnection();
-        //String connectQuery = "DELETE FROM JOURNAL_ENTRY " +
-          //      " WHERE Username = '" + user + "' AND CityName = '" + city + "' AND EntryDate = '" + date + "';";
-
         try {
-//            Statement statement = connectDB.createStatement();
-//            int queryOutput = statement.executeUpdate(connectQuery);
             FXMLLoader fxmlLoader = new FXMLLoader(TJApp.class.getResource("ReportScene.fxml"));
             Scene scene = new Scene((Parent) fxmlLoader.load());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             ReportController controller = fxmlLoader.getController();
-            //controller.setInfo(this.user);
+            controller.setInfo(user, entryUser, city, date);
         } catch (Exception var6) {
             var6.printStackTrace();
         }
     }
 
-    public void setInfo(String user, String city, String date) {
+    public void setInfo(String user, String city, String date, String entryUser) {
         this.user = user;
         this.city = city;
         this.date = date;
+        this.entryUser = entryUser;
         populate();
     }
 
