@@ -12,7 +12,7 @@ public class TJApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 500, 500);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("Travel Journal");
         stage.setScene(scene);
         stage.show();

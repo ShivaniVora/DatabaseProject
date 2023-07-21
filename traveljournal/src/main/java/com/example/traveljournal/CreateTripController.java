@@ -55,6 +55,9 @@ public class CreateTripController extends Application {
                 if (result != 0) {
                     changed = true;
                     incorrect.setText("Trip saved!");
+                    tn.setText("");
+                    sd.getEditor().clear();
+                    ed.getEditor().clear();
                 }
                 if (!changed){
                     incorrect.setText("Please choose a different trip name and check dates");
