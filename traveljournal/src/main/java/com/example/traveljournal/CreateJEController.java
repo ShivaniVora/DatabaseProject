@@ -134,9 +134,9 @@ public class CreateJEController extends Application {
             result = statement.executeQuery(connectQuery);
             while (result.next()) {
                 if (result.getString(1).equals("1")) {
-                    privacyCB.setValue("Private");
-                } else {
                     privacyCB.setValue("Public");
+                } else {
+                    privacyCB.setValue("Private");
                 }
                 ratingCB.setValue(null);
             }
