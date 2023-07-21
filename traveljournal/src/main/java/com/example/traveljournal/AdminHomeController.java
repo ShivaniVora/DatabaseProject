@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -40,30 +41,62 @@ public class AdminHomeController extends Application {
 
     }
 
+    public void reviewReport(Event event) throws SQLException {
+        try {
+            String userlist = tableView.getSelectionModel().getSelectedItem().toString();
+            if (userlist != null) {
+//                System.out.println(userlist);
+                String city = userlist.substring(1, userlist.length() - 1).split(", ")[1];
+                String date = userlist.substring(1, userlist.length() - 1).split(", ")[5];
+                String flaggedUser = userlist.substring(1, userlist.length() - 1).split(", ")[0];
+//                System.out.println(city);
+//                System.out.println(date);
+                FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("Review_Flagged_Entry.fxml")));
+                Scene scene = new Scene(fxmlLoader.load());
+                Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+                stage.setScene(scene);
+                ReviewReport controller = fxmlLoader.getController();
+                controller.setInfo(user, city, date, flaggedUser);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void build() {
         data = FXCollections.observableArrayList();
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
 
-        String tableQuery = "SELECT je.Username, je.CityName, je.Note, GROUP_CONCAT(fr.Reason SEPARATOR \", \"), uf.USERNAME AS FLAGGER " +
+        String tableQuery = "SELECT je.Username, je.CityName, je.Note, GROUP_CONCAT(fr.Reason SEPARATOR \"; \"), uf.USERNAME AS Flagger, je.EntryDate " +
                 "FROM JOURNAL_ENTRY je JOIN USER_FLAGS uf ON je.EntryID = uf.EntryID LEFT OUTER JOIN FLAG_REASON fr " +
-                "ON uf.Username = fr.Username AND uf.EntryID and fr.EntryID GROUP BY je.Username, je.CityName, je.Note, uf.Username;";
+                "ON uf.Username = fr.Username AND uf.EntryID and fr.EntryID GROUP BY je.Username, je.CityName, je.Note, je.EntryDate, Flagger;";
 
         try {
             Statement statement = connectDB.createStatement();
             ResultSet result = statement.executeQuery((tableQuery));
             for (int i = 0; i < result.getMetaData().getColumnCount(); i++) {
                 final int j = i;
-                TableColumn col = new TableColumn(result.getMetaData().getColumnName(i + 1));
-                col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param ->
-                        new SimpleStringProperty(param.getValue().get(j).toString()));
+                TableColumn col;
+                if (i == 4) {
+                    col = new TableColumn("Flagger");
+                } else if (i == 3) {
+                    col = new TableColumn("Reasons");
+                } else {
+                    col = new TableColumn(result.getMetaData().getColumnName(i + 1));
+                }
+                col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param -> new SimpleStringProperty(param.getValue().get(j).toString()));
                 tableView.getColumns().addAll(col);
             }
 
             while (result.next()) {
                 ObservableList<String> row = FXCollections.observableArrayList();
                 for (int i = 1; i <= result.getMetaData().getColumnCount(); i++) {
-                    row.add(result.getString(i));
+                    if (result.getString(i) == null) {
+                        row.add("NONE");
+                    } else {
+                        row.add(result.getString(i));
+                    }
                 }
                 data.add(row);
             }
