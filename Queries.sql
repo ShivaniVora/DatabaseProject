@@ -96,6 +96,9 @@ WHERE Username = "user";
 INSERT INTO JOURNAL_ENTRY(Username,EntryDate, Note, Rating, PrivacyLevel, CityName, Country) 
 VALUES ("user", CURDATE(), "Great visit!", 5, True, "NewCity", "NewCountry");
 
+INSERT INTO JOURNAL_ENTRY(Username,EntryDate, Note, Rating, PrivacyLevel, CityName, Country) 
+VALUES ("user", "2023-08-01", "note!", NULL, True, "London", "NewCountry");
+
 -- SQL #16: query populates this screen with the user’s trip names. Clicking a trip name takes the user to the “My Trip Report” screen.
 -- "user" is the username of the currently logged in user, has to be passed from previous screens
 
@@ -124,7 +127,7 @@ ORDER BY EntryDate;
 
 SELECT EntryDate, CityName, Country, Rating, Note
 FROM JOURNAL_ENTRY NATURAL JOIN CITY
-WHERE Username = "camloyet"
+WHERE Username = "user"
 ORDER BY EntryDate;
 
 -- SQL #19: Clicking on “City” reorders the info alphabetically by city name (A-Z)

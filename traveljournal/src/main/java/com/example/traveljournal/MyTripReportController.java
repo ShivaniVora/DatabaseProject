@@ -69,13 +69,19 @@ public class MyTripReportController extends Application {
 
     public void cityEntry (Event event) throws SQLException {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("MyCityEntry.fxml")));
-            Scene scene = new Scene(fxmlLoader.load());
-            //Stage stage = getCurrentStage(event);
-            Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
-            stage.setScene(scene);
-            MyCityEntryController controller = fxmlLoader.getController();
-            controller.setInfo(user);
+            String userlist = tableView.getSelectionModel().getSelectedItem().toString();
+            if (userlist != null) {
+                System.out.println(userlist.substring(1, userlist.length() - 1));
+                String city = userlist.substring(1, userlist.length() - 1).split(", ")[1];
+                String date = userlist.substring(1, userlist.length() - 1).split(", ")[0];
+                FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("MyCityEntryScene.fxml")));
+                Scene scene = new Scene(fxmlLoader.load());
+                //Stage stage = getCurrentStage(event);
+                Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+                stage.setScene(scene);
+                MyCityEntryController controller = fxmlLoader.getController();
+                controller.setInfo(user, city, date, trip);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -110,7 +116,8 @@ public class MyTripReportController extends Application {
             while (result.next()) {
                 ObservableList<String> row = FXCollections.observableArrayList();
                 for (int i = 1; i <= result.getMetaData().getColumnCount(); i++) {
-                    row.add(result.getString(i));
+                    String fixed = result.getString(i) == null ? "NONE" : result.getString(i);
+                    row.add(fixed);
                 }
                 data.add(row);
             }
