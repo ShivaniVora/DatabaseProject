@@ -59,6 +59,8 @@ public class LoginController {
                     //Stage stage = getCurrentStage(event);
                     Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
                     stage.setScene(scene);
+                    AdminHomeController controller = fxmlLoader.getController();
+                    controller.setInfo(currUN);
                 }
             }
 

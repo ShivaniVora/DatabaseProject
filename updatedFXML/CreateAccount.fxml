@@ -10,7 +10,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traveljournal.CreateAccountController">
    <children>
       <Label layoutX="260.0" layoutY="46.0" text="Create Account" />
-      <Label fx:id="incorrect" layoutX="200.0" layoutY="70.0" textFill="Red" />
+      <Button layoutX="32.0" layoutY="21.0" mnemonicParsing="false" text="Back" onAction="#back"/>
       <TextField fx:id="fn" layoutX="226.0" layoutY="93.0" promptText="First Name" />
       <TextField fx:id="ln" layoutX="226.0" layoutY="135.0" promptText="Last Name" />
       <TextField fx:id="createUser" layoutX="226.0" layoutY="177.0" promptText="Username" />
