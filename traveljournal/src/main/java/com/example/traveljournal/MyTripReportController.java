@@ -71,7 +71,6 @@ public class MyTripReportController extends Application {
         try {
             String userlist = tableView.getSelectionModel().getSelectedItem().toString();
             if (userlist != null) {
-                System.out.println(userlist.substring(1, userlist.length() - 1));
                 String city = userlist.substring(1, userlist.length() - 1).split(", ")[1];
                 String date = userlist.substring(1, userlist.length() - 1).split(", ")[0];
                 FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("MyCityEntryScene.fxml")));

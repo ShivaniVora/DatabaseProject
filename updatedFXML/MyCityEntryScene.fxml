@@ -40,7 +40,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Delete" fx:id="delete"/>
+                  <Button mnemonicParsing="false" text="Delete" onAction="#delete"/>
                </children>
                <padding>
                   <Insets left="30.0" right="30.0" />

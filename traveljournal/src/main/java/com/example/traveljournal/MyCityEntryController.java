@@ -56,7 +56,24 @@ public class MyCityEntryController extends Application {
     }
 
     public void delete(ActionEvent event) throws SQLException {
-        
+        DataBaseConnector connection = new DataBaseConnector();
+        Connection connectDB = connection.getConnection();
+        String connectQuery = "DELETE FROM JOURNAL_ENTRY " +
+                " WHERE Username = '" + user + "' AND CityName = '" + city + "' AND EntryDate = '" + date + "';";
+
+        try {
+            Statement statement = connectDB.createStatement();
+            int queryOutput = statement.executeUpdate(connectQuery);
+            FXMLLoader fxmlLoader = new FXMLLoader(TJApp.class.getResource("MyTripReport.fxml"));
+            Scene scene = new Scene((Parent) fxmlLoader.load());
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            MyTripReportController controller = fxmlLoader.getController();
+            controller.setTrip(this.trip);
+            controller.setInfo(this.user);
+        } catch (Exception var6) {
+            var6.printStackTrace();
+        }
     }
 
     public void setInfo(String user, String city, String date, String trip) {
