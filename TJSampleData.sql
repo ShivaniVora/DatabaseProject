@@ -56,7 +56,7 @@ VALUES
 
 INSERT INTO REASON
 VALUES 
-    ("Harrassment"),
+    ("Harassment"),
     ("Explicit Language"),
     ("Off Topic")
 ;

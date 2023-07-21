@@ -9,14 +9,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CreateJEController extends Application {
 
@@ -29,6 +26,8 @@ public class CreateJEController extends Application {
     public TextField cityText;
     @FXML
     public TextField countryText;
+    @FXML
+    public Text incorrect;
     @FXML
     public DatePicker dateText;
     @FXML
@@ -68,7 +67,7 @@ public class CreateJEController extends Application {
         try {
             int result = 0;
             FXMLLoader fxmlLoader = null;
-            if (!((this.noteText == null && (this.ratingCB.getValue() == null)) || this.cityText == null || this.countryText == null || this.dateText == null)) {
+            if (!(((this.ratingCB.getValue() == null) && this.noteText.getText().equals("")) || this.cityText.getText().equals("") || this.countryText.getText().equals("") || this.dateText.getValue().toString().equals(""))) {
                 if (noteText == null) {
                     connectQuery = "INSERT INTO JOURNAL_ENTRY(Username, EntryDate, Note, Rating, PrivacyLevel, CityName, Country) VALUES('"
                             + this.user + "', '" + this.dateText.getValue().toString() + "', NULL, '" + this.ratingCB.getValue().toString() + "', '" + privacy + "', '" + cityText.getText()
@@ -93,11 +92,15 @@ public class CreateJEController extends Application {
                 controller.setInfo(user);
 
             } else {
-                System.out.println("fail");
+                incorrect.setText("Please make sure all required fields are filled out");
             }
 
-        } catch (Exception var12) {
-            var12.printStackTrace();
+        } catch (NullPointerException var12) {
+            incorrect.setText("Please make sure all required fields are filled out");
+        } catch (SQLIntegrityConstraintViolationException var12) {
+            incorrect.setText("Cannot have two Journal Entries about same place on same date");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         connectDB.close();
@@ -124,21 +127,24 @@ public class CreateJEController extends Application {
         //get default account privacy
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
-        String connectQuery = "SELECT IsPublic FROM ACCOUNT WHERE Username = '" + user + "');";
-        int result = 0;
+        String connectQuery = "SELECT IsPublic FROM ACCOUNT WHERE Username = '" + user + "';";
+        ResultSet result = null;
         try {
             Statement statement = connectDB.createStatement();
-            result = statement.executeUpdate(connectQuery);
+            result = statement.executeQuery(connectQuery);
+            while (result.next()) {
+                if (result.getString(1).equals("1")) {
+                    privacyCB.setValue("Private");
+                } else {
+                    privacyCB.setValue("Public");
+                }
+                ratingCB.setValue(null);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(result);
-        if (result == 1) {
-            privacyCB.setValue("Private");
-        } else {
-            privacyCB.setValue("Public");
-        }
-        ratingCB.setValue(null);
+
+
 
     }
 }
