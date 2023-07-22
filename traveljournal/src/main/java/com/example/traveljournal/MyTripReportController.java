@@ -81,6 +81,8 @@ public class MyTripReportController extends Application {
                 MyCityEntryController controller = fxmlLoader.getController();
                 controller.setInfo(user, city, date, trip);
             }
+        } catch (NullPointerException e) {
+//            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
