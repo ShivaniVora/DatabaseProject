@@ -47,10 +47,10 @@ public class CreateAccountController extends Application {
     public void onSubmit(ActionEvent event) throws SQLException {
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
-        String adminTrue = "1";
+        String userTrue = "1";
         String publicity = "0";
         if (isAdmin.isSelected()) {
-            adminTrue = "0";
+            userTrue = "0";
         }
 
         if (isPublic.isSelected()) {
@@ -58,7 +58,7 @@ public class CreateAccountController extends Application {
         }
 
         String connectQuery = "INSERT INTO ACCOUNT (FirstName, LastName, Username, Email, UserPassword, IsUser, MembershipStartDate, isPublic)" +
-                "VALUES ('" + fn.getText() + "', '" + ln.getText() + "', '" + createUser.getText() + "', '" + email.getText() + "', '" + password.getText() + "', " + adminTrue + ", CURDATE(), "+ publicity +" );";
+                "VALUES ('" + fn.getText() + "', '" + ln.getText() + "', '" + createUser.getText() + "', '" + email.getText() + "', '" + password.getText() + "', " + userTrue + ", CURDATE(), "+ publicity +" );";
 
         try {
             int result = 0;
@@ -67,7 +67,7 @@ public class CreateAccountController extends Application {
             if (!(fn.getText().equals("") || ln.getText().equals("") || createUser.getText().equals("") || email.getText().equals("") || password.getText().equals(""))){
                 Statement statement = connectDB.createStatement();
                 result = statement.executeUpdate((connectQuery));
-                if (result != 0 && adminTrue.equals("1")) {
+                if (result != 0 && userTrue.equals("1")) {
                     changed = true;
                     fxmlLoader = new FXMLLoader((TJApp.class.getResource("Home.fxml")));
                     Scene scene = new Scene(fxmlLoader.load());
@@ -76,13 +76,15 @@ public class CreateAccountController extends Application {
                     stage.setScene(scene);
                     HomeController controller = fxmlLoader.getController();
                     controller.setInfo(createUser.getText());
-                } else if (result != 0 && adminTrue.equals("0")) {
+                } else if (result != 0 && userTrue.equals("0")) {
                     changed = true;
                     fxmlLoader = new FXMLLoader((TJApp.class.getResource("Admin_Flags_Home_Page.fxml")));
                     Scene scene = new Scene(fxmlLoader.load());
                     //Stage stage = getCurrentStage(event);
                     Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
                     stage.setScene(scene);
+                    AdminHomeController controller = fxmlLoader.getController();
+                    controller.setInfo(createUser.getText());
                 }
                 if (!changed){
                     incorrect.setText("Please choose a different username or email");
@@ -96,5 +98,18 @@ public class CreateAccountController extends Application {
             e.printStackTrace();
         }
         connectDB.close();
+    }
+
+    public void back(ActionEvent event) throws SQLException {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("Login.fxml")));
+            Scene scene = new Scene(fxmlLoader.load());
+            //Stage stage = getCurrentStage(event);
+            Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+            stage.setScene(scene);
+            LoginController controller = fxmlLoader.getController();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

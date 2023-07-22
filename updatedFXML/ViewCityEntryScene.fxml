@@ -8,13 +8,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traveljournal.ReviewReport">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traveljournal.ViewCityEntryController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="500.0" spacing="5.0">
+            <VBox alignment="TOP_CENTER" prefHeight="305.0" prefWidth="500.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Review Flagged Entry (admin)">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="View City Entry">
                      <font>
                         <Font size="21.0" />
                      </font>
@@ -40,13 +40,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="38.0" prefWidth="440.0" spacing="10.0">
-                     <children>
-                        <Button mnemonicParsing="false" text="Clear Flag" onAction="#clearFlag" />
-                        <Button mnemonicParsing="false" text="Delete Entry" onAction="#deleteEntry" />
-                        <Button mnemonicParsing="false" text="Ban User" onAction="#banUser"/>
-                     </children>
-                  </HBox>
+                  <Button mnemonicParsing="false" text="Report" onAction="#report" />
                </children>
                <padding>
                   <Insets left="30.0" right="30.0" />
@@ -64,10 +58,9 @@
    <top>
       <HBox prefHeight="63.0" prefWidth="600.0" spacing="1.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#back" text="Back" />
+            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Back" onAction="#back" />
          </children>
          <BorderPane.margin>
-            <Insets />
             <Insets />
          </BorderPane.margin>
          <padding>

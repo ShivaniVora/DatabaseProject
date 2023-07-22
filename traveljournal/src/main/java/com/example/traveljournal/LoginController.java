@@ -32,7 +32,7 @@ public class LoginController {
     public void loginAction (ActionEvent event) throws SQLException {
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
-        String connectQuery = "SELECT IsUser FROM ACCOUNT WHERE Username = '" + user.getText() + "' AND UserPassword = '" + pass.getText() + "';";
+        String connectQuery = "SELECT IsUser, IsBanned FROM ACCOUNT WHERE Username = '" + user.getText() + "' AND UserPassword = '" + pass.getText() + "';";
 
         currUN = user.getText();
 
@@ -43,7 +43,7 @@ public class LoginController {
             while (queryOutput.next()) {
                 FXMLLoader fxmlLoader = null;
 
-                if (queryOutput.getString(1).equals("1")) {
+                if (queryOutput.getString(1).equals("1") && queryOutput.getString(2).equals("0")) {
                     executed = true;
                     fxmlLoader = new FXMLLoader((TJApp.class.getResource("Home.fxml")));
                     Scene scene = new Scene(fxmlLoader.load());
@@ -59,6 +59,11 @@ public class LoginController {
                     //Stage stage = getCurrentStage(event);
                     Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
                     stage.setScene(scene);
+                    AdminHomeController controller = fxmlLoader.getController();
+                    controller.setInfo(currUN);
+                } else if(queryOutput.getString(2).equals("1")){
+                    executed = true;
+                    incorrect.setText("This user has been banned");
                 }
             }
 

@@ -100,7 +100,6 @@ public class ViewTripsController extends Application {
         try {
             String userlist = tableView.getSelectionModel().getSelectedItem().toString();
             if (userlist != null) {
-                System.out.println(userlist.substring(1, userlist.length() - 1));
                 FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("MyTripReport.fxml")));
                 Scene scene = new Scene(fxmlLoader.load());
                 //Stage stage = getCurrentStage(event);

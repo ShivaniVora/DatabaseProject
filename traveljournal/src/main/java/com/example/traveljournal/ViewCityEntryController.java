@@ -15,13 +15,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MyCityEntryController extends Application {
+public class ViewCityEntryController extends Application {
 
+    public String entryUser;
     public String user;
+
     public String city;
     public String date;
 
-    public String trip;
+//    public String trip;
 
     @FXML
     public Text cityText;
@@ -47,7 +49,6 @@ public class MyCityEntryController extends Application {
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             MyTripReportController controller = fxmlLoader.getController();
-            controller.setTrip(this.trip);
             controller.setInfo(this.user);
         } catch (Exception var6) {
             var6.printStackTrace();
@@ -55,32 +56,24 @@ public class MyCityEntryController extends Application {
 
     }
 
-    public void delete(ActionEvent event) throws SQLException {
-        DataBaseConnector connection = new DataBaseConnector();
-        Connection connectDB = connection.getConnection();
-        String connectQuery = "DELETE FROM JOURNAL_ENTRY " +
-                " WHERE Username = '" + user + "' AND CityName = '" + city + "' AND EntryDate = '" + date + "';";
-
+    public void report(ActionEvent event) throws SQLException {
         try {
-            Statement statement = connectDB.createStatement();
-            int queryOutput = statement.executeUpdate(connectQuery);
-            FXMLLoader fxmlLoader = new FXMLLoader(TJApp.class.getResource("MyTripReport.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(TJApp.class.getResource("ReportScene.fxml"));
             Scene scene = new Scene((Parent) fxmlLoader.load());
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
-            MyTripReportController controller = fxmlLoader.getController();
-            controller.setTrip(this.trip);
-            controller.setInfo(this.user);
+            ReportController controller = fxmlLoader.getController();
+            controller.setInfo(user, entryUser, city, date);
         } catch (Exception var6) {
             var6.printStackTrace();
         }
     }
 
-    public void setInfo(String user, String city, String date, String trip) {
+    public void setInfo(String user, String city, String date, String entryUser) {
         this.user = user;
         this.city = city;
         this.date = date;
-        this.trip = trip;
+        this.entryUser = entryUser;
         populate();
     }
 
@@ -88,7 +81,7 @@ public class MyCityEntryController extends Application {
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
         String connectQuery = "SELECT EntryDate, CityName, Rating, Note FROM JOURNAL_ENTRY " +
-        " WHERE Username = '" + user + "' AND CityName = '" + city + "' AND EntryDate = '" + date + "';";
+                " WHERE Username = '" + user + "' AND CityName = '" + city + "' AND EntryDate = '" + date + "';";
 
         try {
             Statement statement = connectDB.createStatement();
