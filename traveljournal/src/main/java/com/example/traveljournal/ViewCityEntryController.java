@@ -19,6 +19,10 @@ public class ViewCityEntryController extends Application {
 
     public String entryUser;
     public String user;
+    public String country;
+
+    public String entryID = null;
+
 
     public String city;
     public String date;
@@ -44,12 +48,12 @@ public class ViewCityEntryController extends Application {
 
     public void back(ActionEvent event) throws SQLException {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(TJApp.class.getResource("MyTripReport.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(TJApp.class.getResource("CityEntriesScene.fxml"));
             Scene scene = new Scene((Parent)fxmlLoader.load());
             Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
-            MyTripReportController controller = fxmlLoader.getController();
-            controller.setInfo(this.user);
+            CityEntriesController controller = fxmlLoader.getController();
+            controller.setCity(city, country, user);
         } catch (Exception var6) {
             var6.printStackTrace();
         }
@@ -63,25 +67,39 @@ public class ViewCityEntryController extends Application {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             ReportController controller = fxmlLoader.getController();
-            controller.setInfo(user, entryUser, city, date);
+            controller.setInfo(user, entryID, city, date, country);
         } catch (Exception var6) {
             var6.printStackTrace();
         }
     }
 
-    public void setInfo(String user, String city, String date, String entryUser) {
-        this.user = user;
+    public void setEntryID(String entryID, String city, String country, String user) {
+        this.entryID = entryID;
         this.city = city;
-        this.date = date;
-        this.entryUser = entryUser;
+        this.country = country;
+        this.user = user;
         populate();
     }
+
+//    public void setInfo(String user, String city, String date, String entryUser) {
+//        this.user = user;
+//        this.city = city;
+//        this.date = date;
+//        this.entryUser = entryUser;
+//        populate();
+//    }
 
     private void populate() {
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
-        String connectQuery = "SELECT EntryDate, CityName, Rating, Note FROM JOURNAL_ENTRY " +
-                " WHERE Username = '" + user + "' AND CityName = '" + city + "' AND EntryDate = '" + date + "';";
+        String connectQuery = "";
+        if (entryID == null) {
+             connectQuery = "SELECT EntryDate, CityName, Rating, Note FROM JOURNAL_ENTRY " +
+                    " WHERE Username = '" + user + "' AND CityName = '" + city + "' AND EntryDate = '" + date + "';";
+        } else {
+             connectQuery = "SELECT EntryDate, CityName, Rating, Note FROM JOURNAL_ENTRY " +
+                    " WHERE EntryID = '" + entryID + "';";
+        }
 
         try {
             Statement statement = connectDB.createStatement();

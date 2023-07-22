@@ -15,7 +15,6 @@ public class DataBaseConnector {
 
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("test");
             databaseLink = DriverManager.getConnection(url, databaseUser, databasePassword);
         } catch (Exception e) {
             e.printStackTrace();

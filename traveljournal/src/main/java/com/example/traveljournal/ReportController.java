@@ -19,6 +19,9 @@ public class ReportController extends Application {
 
     public String user;
     public String entryUser;
+    public String entryID;
+    public String entryCountry;
+
 
     public String entryCity;
 
@@ -42,10 +45,11 @@ public class ReportController extends Application {
 
     }
 
-    public void setInfo(String user, String entryUser, String entryCity, String entryDate) {
+    public void setInfo(String user, String entryID, String entryCity, String entryDate, String entryCountry) {
         this.user = user;
         this.entryCity = entryCity;
-        this.entryUser = entryUser;
+        this.entryID = entryID;
+        this.entryCountry = entryCountry;
         this.entryDate = entryDate;
     }
 
@@ -56,7 +60,7 @@ public class ReportController extends Application {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             ViewCityEntryController controller = fxmlLoader.getController();
-            controller.setInfo(user, entryCity, entryDate, entryUser);
+            controller.setEntryID(entryID, entryCity, entryCountry, user);
         } catch (Exception var6) {
             var6.printStackTrace();
         }
@@ -65,18 +69,18 @@ public class ReportController extends Application {
     public void report (ActionEvent event) throws SQLException {
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
-        String entryIDQuery = "(SELECT EntryID FROM JOURNAL_ENTRY WHERE " +
-        " Username = '" + entryUser + "' AND EntryDate = '" + entryDate + "' AND CityName = '" + entryCity + "');";
-        String entryID = "";
-        try {
-            Statement statement = connectDB.createStatement();
-            ResultSet queryOutput = statement.executeQuery(entryIDQuery);
-            while (queryOutput.next()) {
-                entryID = queryOutput.getString(1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String entryIDQuery = "(SELECT EntryID FROM JOURNAL_ENTRY WHERE " +
+//        " Username = '" + entryUser + "' AND EntryDate = '" + entryDate + "' AND CityName = '" + entryCity + "');";
+//        String entryID = "";
+//        try {
+//            Statement statement = connectDB.createStatement();
+//            ResultSet queryOutput = statement.executeQuery(entryIDQuery);
+//            while (queryOutput.next()) {
+//                entryID = queryOutput.getString(1);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
 
@@ -114,7 +118,7 @@ public class ReportController extends Application {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             ViewCityEntryController controller = fxmlLoader.getController();
-            controller.setInfo(user, entryCity, entryDate, entryUser);
+            controller.setEntryID(entryID, entryCity, entryCountry, entryDate);
         } catch (Exception var6) {
             var6.printStackTrace();
         }

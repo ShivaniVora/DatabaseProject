@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -22,15 +21,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SearchCityController extends Application {
+public class CityEntriesController extends Application {
+
+    public String city;
+    public String country;
 
     public String user;
-    ObservableList<ObservableList> data;
 
     @FXML
     public TableView tableView;
-    @FXML
-    public TextField search;
+
+    ObservableList<ObservableList> data;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -43,20 +45,22 @@ public class SearchCityController extends Application {
 
     public void back (ActionEvent event) throws SQLException {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("Home.fxml")));
+            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("SearchForCity.fxml")));
             Scene scene = new Scene(fxmlLoader.load());
             //Stage stage = getCurrentStage(event);
             Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
             stage.setScene(scene);
-            HomeController controller = fxmlLoader.getController();
+            SearchCityController controller = fxmlLoader.getController();
             controller.setInfo(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setInfo(String user) {
+    public void setCity(String city, String country, String user) {
         this.user = user;
+        this.country = country;
+        this.city = city;
         build();
     }
 
@@ -66,7 +70,11 @@ public class SearchCityController extends Application {
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
 
-        String tableQuery = "SELECT CityName AS 'City', Country, AVG(Rating) AS 'Average Rating' FROM JOURNAL_ENTRY WHERE PrivacyLevel = TRUE GROUP BY CityName, Country;";
+        String tableQuery =
+        "SELECT EntryDate, Rating, Note, EntryID " +
+        "FROM JOURNAL_ENTRY " +
+        "WHERE CityName = '"+ city + "' AND Country = '"+ country +"' AND PrivacyLevel = True;";
+
         try {
             Statement statement = connectDB.createStatement();
             ResultSet result = statement.executeQuery((tableQuery));
@@ -98,66 +106,33 @@ public class SearchCityController extends Application {
         }
     }
 
-    public void allEntries (Event event) throws SQLException {
+    public void oneEntry (Event event) throws SQLException {
         try {
             String userlist = tableView.getSelectionModel().getSelectedItem().toString();
             if (userlist != null) {
-                String city = userlist.substring(1, userlist.length() - 1).split(", ")[0];
-                String country = userlist.substring(1, userlist.length() - 1).split(", ")[1];
-                FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("CityEntriesScene.fxml")));
+                String entryID = userlist.substring(1, userlist.length() - 1).split(", ")[3];
+                FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("ViewCityEntryScene.fxml")));
                 Scene scene = new Scene(fxmlLoader.load());
                 //Stage stage = getCurrentStage(event);
                 Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
                 stage.setScene(scene);
-                CityEntriesController controller = fxmlLoader.getController();
-                controller.setCity(city, country, user);
+                ViewCityEntryController controller = fxmlLoader.getController();
+                controller.setEntryID(entryID, city, country, user);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void searchCity (ActionEvent event) throws SQLException {
-        tableView.getColumns().clear();
-        DataBaseConnector connection = new DataBaseConnector();
-        Connection connectDB = connection.getConnection();
-        String tableQuery = "SELECT CityName AS 'City', Country, AVG(Rating) AS 'Average Rating' FROM JOURNAL_ENTRY WHERE PrivacyLevel = TRUE AND CityName = '" + search.getText() + "'GROUP BY CityName, Country;";
+    public void createJE (ActionEvent event) throws SQLException {
         try {
-            Statement statement = connectDB.createStatement();
-            ResultSet result = statement.executeQuery((tableQuery));
-            tableView.getItems().clear();
-            for (int i = 0; i < result.getMetaData().getColumnCount(); i++) {
-                final int j = i;
-                TableColumn col = new TableColumn(result.getMetaData().getColumnName(i + 1));
-                col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param ->
-                        new SimpleStringProperty(param.getValue().get(j).toString()));
-                tableView.getColumns().addAll(col);
-            }
-
-            while (result.next()) {
-                ObservableList<String> row = FXCollections.observableArrayList();
-                for (int i = 1; i <= result.getMetaData().getColumnCount(); i++) {
-                    if (result.getString(i) == null) {
-                        row.add("NONE");
-                    } else {
-                        row.add(result.getString(i));
-                    }
-                }
-                data.add(row);
-            }
-            tableView.setItems(data);
-            connectDB.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void reset (ActionEvent event) {
-        try {
-            tableView.getColumns().clear();
-            search.clear();
-            build();
+            FXMLLoader fxmlLoader = new FXMLLoader((TJApp.class.getResource("CreateJEScene.fxml")));
+            Scene scene = new Scene(fxmlLoader.load());
+            //Stage stage = getCurrentStage(event);
+            Stage stage = (Stage) ((Node) (event.getSource())).getScene().getWindow();
+            stage.setScene(scene);
+            CreateJEController controller = fxmlLoader.getController();
+            controller.setInfo(user);
         } catch (Exception e) {
             e.printStackTrace();
         }

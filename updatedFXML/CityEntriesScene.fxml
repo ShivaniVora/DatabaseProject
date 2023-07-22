@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Text?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.traveljournal.CityEntriesController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -22,11 +22,11 @@
                         <Font size="21.0" />
                      </font>
                   </Text>
-                  <TableView prefHeight="213.0" prefWidth="500.0">
+                  <TableView prefHeight="213.0" prefWidth="500.0" fx:id="tableView" onMouseClicked="#oneEntry">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Date" />
-                      <TableColumn prefWidth="75.0" text="Rating" />
-                        <TableColumn prefWidth="75.0" text="Note" />
+<!--                      <TableColumn prefWidth="75.0" text="Date" />-->
+<!--                      <TableColumn prefWidth="75.0" text="Rating" />-->
+<!--                        <TableColumn prefWidth="75.0" text="Note" />-->
                     </columns>
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />
@@ -35,7 +35,7 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Button mnemonicParsing="false" text="Create Journal Entry" />
+                  <Button mnemonicParsing="false" text="Create Journal Entry" onAction="#createJE"/>
                </children>
             </VBox>
          </children>
@@ -50,7 +50,7 @@
    <top>
       <HBox prefHeight="63.0" prefWidth="600.0" spacing="1.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Back" />
+            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Back" onAction="#back"/>
          </children>
          <BorderPane.margin>
             <Insets />
