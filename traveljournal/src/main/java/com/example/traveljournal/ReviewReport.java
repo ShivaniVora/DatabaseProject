@@ -164,6 +164,7 @@ public class ReviewReport extends Application {
         Connection connectDB = connection.getConnection();
 
         String banQuery = "UPDATE ACCOUNT SET IsBanned = TRUE WHERE Username = '" + flaggedUser + "';";
+        String deleteJEQuery = "DELETE FROM JOURNAL_ENTRY WHERE Username = '" + flaggedUser + "';";
 
         try {
             Statement statement = connectDB.createStatement();
@@ -183,10 +184,11 @@ public class ReviewReport extends Application {
                 var6.printStackTrace();
             }
 
-            String connectQuery = "DELETE FROM USER_FLAGS WHERE EntryID = " + id + ";";
+            String removeFlagQuery = "DELETE FROM USER_FLAGS WHERE EntryID = " + id + ";";
 
             try {
-                statement.executeUpdate(connectQuery);
+                statement.executeUpdate(removeFlagQuery);
+                statement.executeUpdate(deleteJEQuery);
                 FXMLLoader fxmlLoader = new FXMLLoader(TJApp.class.getResource("Admin_Flags_Home_Page.fxml"));
                 Scene scene = new Scene((Parent)fxmlLoader.load());
                 Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
