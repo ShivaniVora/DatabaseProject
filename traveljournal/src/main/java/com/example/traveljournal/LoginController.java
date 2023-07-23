@@ -70,11 +70,11 @@ public class LoginController {
             if(!executed) {
                 incorrect.setText("Incorrect Login Info");
             }
+            connectDB.close();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        connectDB.close();
     }
 
     public void createAccButton (ActionEvent event) throws SQLException {

@@ -65,4 +65,4 @@ INSERT INTO USER_FLAGS
 VALUES ("camloyet", 5), ("travel_lover123", 3);
 
 INSERT INTO FLAG_REASON
-	VALUES ("camloyet", 5, "Harrassment"), ("camloyet", 5, "Off Topic");
+	VALUES ("camloyet", 5, "Harassment"), ("camloyet", 5, "Off Topic");
