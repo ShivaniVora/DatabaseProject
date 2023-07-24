@@ -80,7 +80,7 @@ INSERT INTO USER_FLAGS
 VALUES ("user", 1);
 
 INSERT INTO FLAG_REASON
-	VALUES ("user", 1, "Harrassment"), ("user", 1, "Explicit Language");
+	VALUES ("user", 1, "Harassment"), ("user", 1, "Explicit Language");
 
 /*
 -- SQL #14: Public vs Private. The user can choose to click to change that if they want to
