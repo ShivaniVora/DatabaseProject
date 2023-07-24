@@ -42,15 +42,19 @@ public class SettingsController extends Application {
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
         String publicity = ispublic.isSelected() ? "1" : "0";
-        String connectQuery = "UPDATE ACCOUNT SET Firstname = '" + fn.getText() + "', LastName = '" + ln.getText() + "', Email = '" + email.getText() + "', UserPassword = '" + password.getText() + "', IsPublic = "+ publicity +" WHERE Username= '" + user + "';";
-        try {
-            Statement statement = connectDB.createStatement();
-            int queryOutput = statement.executeUpdate((connectQuery));
-            msg.setText("Updates saved!");
-        } catch (SQLIntegrityConstraintViolationException e) {
-            msg.setText("Please choose a different email");
-        } catch (Exception e) {
-            e.printStackTrace();;
+        if (fn.getText().equals("") || ln.getText().equals("") || email.getText().equals("") || password.getText().equals("")) {
+            msg.setText("No entries can be empty");
+        } else {
+            String connectQuery = "UPDATE ACCOUNT SET Firstname = '" + fn.getText() + "', LastName = '" + ln.getText() + "', Email = '" + email.getText() + "', UserPassword = '" + password.getText() + "', IsPublic = " + publicity + " WHERE Username= '" + user + "';";
+            try {
+                Statement statement = connectDB.createStatement();
+                int queryOutput = statement.executeUpdate((connectQuery));
+                msg.setText("Updates saved!");
+            } catch (SQLIntegrityConstraintViolationException e) {
+                msg.setText("Please choose a different email");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
