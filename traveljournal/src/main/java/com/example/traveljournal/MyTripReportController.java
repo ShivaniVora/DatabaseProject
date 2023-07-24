@@ -108,7 +108,14 @@ public class MyTripReportController extends Application {
             ResultSet result = statement.executeQuery((tableQuery));
             for (int i = 0; i < result.getMetaData().getColumnCount(); i++) {
                 final int j = i;
-                TableColumn col = new TableColumn(result.getMetaData().getColumnName(i + 1));
+                TableColumn col;
+                if (i == 0) {
+                    col = new TableColumn("Date");
+                } else if (i == 1) {
+                    col = new TableColumn("City");
+                } else {
+                    col = new TableColumn(result.getMetaData().getColumnName(i + 1));
+                }
                 col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param ->
                         new SimpleStringProperty(param.getValue().get(j).toString()));
                 tableView.getColumns().addAll(col);

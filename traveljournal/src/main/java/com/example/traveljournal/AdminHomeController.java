@@ -82,6 +82,8 @@ public class AdminHomeController extends Application {
                     col = new TableColumn("Flagger");
                 } else if (i == 3) {
                     col = new TableColumn("Reasons");
+                } else if (i == 1) {
+                    col = new TableColumn("City");
                 } else {
                     col = new TableColumn(result.getMetaData().getColumnName(i + 1));
                 }

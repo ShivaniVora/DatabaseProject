@@ -7,18 +7,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class SettingsController extends Application {
 
+    @FXML
     public TextField fn;
 
+    @FXML
+    public Label msg;
     @FXML
     public TextField ln;
     @FXML
@@ -38,7 +39,6 @@ public class SettingsController extends Application {
     }
 
     public void updateSelected (ActionEvent event) throws SQLException {
-        System.out.println("hi");
         DataBaseConnector connection = new DataBaseConnector();
         Connection connectDB = connection.getConnection();
         String publicity = ispublic.isSelected() ? "1" : "0";
@@ -46,8 +46,11 @@ public class SettingsController extends Application {
         try {
             Statement statement = connectDB.createStatement();
             int queryOutput = statement.executeUpdate((connectQuery));
+            msg.setText("Updates saved!");
+        } catch (SQLIntegrityConstraintViolationException e) {
+            msg.setText("Please choose a different email");
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();;
         }
     }
 
